@@ -13,7 +13,7 @@ import DetallePedido from "./models/DetallePedido.js";
 import TransaccionPago from "./models/TransaccionPago.js";
 //otros
 import cors from "cors";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
@@ -21,10 +21,12 @@ import fileUpload from "express-fileupload";
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(fileUpload({
-  useTempFiles: true,
-  tempFileDir: './archivos'
-}));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./archivos",
+  })
+);
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -50,7 +52,7 @@ app.use((req, res, next) => {
 });
 
 Pedido.associate = (models) => {
-  Pedido.hasMany(models.DetallePedido, { foreignKey: 'pedido_id' });
+  Pedido.hasMany(models.DetallePedido, { foreignKey: "pedido_id" });
 };
 
 DetallePedido.associate = (models) => {
@@ -101,8 +103,8 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ message: errorMessage });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    
+    const isPasswordValid = await bcrypt.compareSync(password, user.password);
+
     if (!isPasswordValid) {
       const errorMessage = "Contraseña incorrecta";
       console.error(errorMessage);
@@ -133,7 +135,6 @@ app.post("/login", async (req, res) => {
 });
 // Ruta de cierre de sesión
 app.get("/logout", (req, res) => {
-
   try {
     // Utiliza cookieParser para eliminar la cookie
     res.clearCookie("authToken");
@@ -145,8 +146,6 @@ app.get("/logout", (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 });
-
-
 
 // Sincroniza los modelos con la base de datos y escucha en el puerto especificado
 db.sync()

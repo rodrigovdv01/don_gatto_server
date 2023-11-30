@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "../database/db.js";
+import bcrypt from "bcryptjs"; // Updated import statement
 
 const User = db.define(
   "usuarios",
@@ -51,7 +52,7 @@ const User = db.define(
 // Antes de crear un nuevo usuario, hashear la contraseña
 User.beforeCreate(async (user, options) => {
   const saltRounds = 10; // Número de rondas de sal
-  const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+  const hashedPassword = await bcrypt.hashSync(user.password, saltRounds); // Updated method
   user.password = hashedPassword;
 });
 
