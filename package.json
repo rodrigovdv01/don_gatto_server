@@ -5,7 +5,8 @@
     "start": "node main.js"
   },
   "engines": {
-    "node":"18.16.0"
+    "node":"18.16.0",
+    "npm":"9.5.1"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.454.0",
