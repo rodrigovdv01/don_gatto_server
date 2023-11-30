@@ -81,6 +81,7 @@ const createPedido = async (req, res) => {
   }
 };
 
+// Función para obtener los pedidos en el servidor
 const getMisPedidos = async (req, res) => {
   try {
     // Obtén el token de la cookie
