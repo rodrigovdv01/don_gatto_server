@@ -85,10 +85,6 @@ const getMisPedidos = async (req, res) => {
   try {
 
     try {
-      // Verifica el token JWT para obtener el ID del usuario autenticado
-      const decodedToken = jwt.verify(authToken, "1ewe9920"); // Verifica con tu clave secreta
-      const userId = decodedToken.userId;
-
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
       const pedidos = await Pedido.findAll({ where: { user_id: userId } });
 
