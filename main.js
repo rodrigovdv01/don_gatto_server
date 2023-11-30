@@ -88,7 +88,7 @@ app.post("/login", async (req, res) => {
     }
 
     // Crear un token JWT
-    const token = jwt.sign({ userId: user.id }, "1ewe9920", {
+    const token = jwt.sign({ userId: user.id }, "1Ewe9920", {
       expiresIn: "1h",
     });
 
