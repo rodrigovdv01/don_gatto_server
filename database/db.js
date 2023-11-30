@@ -33,8 +33,6 @@ const db = new Sequelize(
         `, // Reemplaza con el nombre y la ubicación correctos del archivo
         rejectUnauthorized: false, // Desactivar la verificación SSL
       },
-      
-      engine: 'InnoDB',
     },
   }
 );

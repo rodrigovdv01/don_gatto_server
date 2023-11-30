@@ -1,1 +1,1 @@
-export const jwtSecret = 'clave_secreta';
+export const jwtSecret = '1Ewe9920';
