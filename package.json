@@ -1,8 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "postinstall": "install-peers",
-    "start": "node main.js"
+    "start": "node main.js",
+    "devStart": "nodemon main.js"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.454.0",
