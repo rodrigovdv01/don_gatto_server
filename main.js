@@ -32,7 +32,7 @@ app.use(
 );
 
 const corsOptions = {
-  origin: "https://dongattovapestore.netlify.app",
+  origin: ["https://dongattovapestore.netlify.app", "http://localhost:3000"],
   credentials: true, // Permite el uso de credenciales (cookies)
 };
 // Handle preflight requests
@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the root endpoint!");
 });
 
-// Aplicar el middleware de verificación de token a las rutas protegidas
+
 app.use("/products", ProductRoutes); // Ejemplo de ruta protegida
 app.use("/users", UserRoutes);
 app.use("/pedidos", PedidoRoutes);
