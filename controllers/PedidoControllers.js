@@ -5,6 +5,8 @@ import User from "../models/User.js";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
+app.use(cookieParser());
+
 const createDetallePedido = async (req, res) => {
   try {
     // Extrae los datos necesarios del cuerpo de la solicitud
@@ -85,7 +87,7 @@ const createPedido = async (req, res) => {
 
 const getMisPedidos = async (req, res) => {
   try {
-    // Obtén el token de la cookie
+    // Obtén el token de la cookie usando req.cookies
     const authToken = req.cookies.authToken;
 
     if (!authToken) {
