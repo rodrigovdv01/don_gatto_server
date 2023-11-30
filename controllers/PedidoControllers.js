@@ -122,7 +122,7 @@ const getAllPedidos = async (req, res) => {
     const pedidos = await Pedido.findAll();
     return res.status(200).json(pedidos);
   } catch (error) {
-    return res.status(500).json({ error: "Error al obtener los pedidos" });
+    return res.status(500).json({ error: "Error en el servidor al obtener pedidos" });
   }
 };
 
@@ -133,7 +133,7 @@ const getDetalles = async (req, res) => {
     // Primero, busca el pedido por su ID
     const pedido = await Pedido.findByPk(id);
     if (!pedido) {
-      return res.status(404).json({ error: "Pedido no encontrado" });
+      return res.status(404).json({ error: "Pedido no encontrado por el servidor" });
     }
 
     // Luego, busca los detalles de pedido asociados a ese pedido
@@ -146,7 +146,7 @@ const getDetalles = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ error: "Error al obtener los detalles del pedido" });
+      .json({ error: "Error en el servidor al obtener los detalles del pedido" });
   }
 };
 
