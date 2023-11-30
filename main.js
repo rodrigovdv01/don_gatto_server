@@ -32,7 +32,7 @@ app.use(
 );
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://dongattovapestore.netlify.app/"],
+  origin: "https://dongattovapestore.netlify.app",
   credentials: true, // Permite el uso de credenciales (cookies)
 };
 // Handle preflight requests
