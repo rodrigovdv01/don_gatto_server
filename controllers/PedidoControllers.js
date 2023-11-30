@@ -81,10 +81,8 @@ const createPedido = async (req, res) => {
   }
 };
 
-// Función para obtener los pedidos en el servidor
 const getMisPedidos = async (req, res) => {
   try {
-    // Obtén el token de la cookie
     const authToken = req.cookies.authToken;
 
     if (!authToken) {
@@ -92,8 +90,8 @@ const getMisPedidos = async (req, res) => {
     }
 
     try {
-      // Verifica el token JWT para obtener el ID del usuario autenticado
-      const decodedToken = jwt.verify(authToken, "1ewe9920"); // Verifica con tu clave secreta
+      // Verificar el token para obtener la información adicional
+      const decodedToken = jwt.verify(authToken, "tuClaveSecreta");
       const userId = decodedToken.userId;
 
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
