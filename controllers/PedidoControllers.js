@@ -93,7 +93,7 @@ const getMisPedidos = async (req, res) => {
 
     try {
       // Verifica el token JWT para obtener el ID del usuario autenticado
-      const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET); // Verifica con tu clave secreta
+      const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
       const userId = decodedToken.userId;
 
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
@@ -106,7 +106,9 @@ const getMisPedidos = async (req, res) => {
     }
   } catch (error) {
     console.error("Error al obtener pedidos:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res
+      .status(500)
+      .json({ message: "Error interno del servidor", error: error.message });
   }
 };
 
