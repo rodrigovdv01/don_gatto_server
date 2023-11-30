@@ -95,6 +95,8 @@ const getMisPedidos = async (req, res) => {
       if (!user) {
         // Si el usuario no se encuentra en la base de datos, el token es inválido
         return res.status(401).json({ isAuthenticated: false });
+      } else {
+        return res.status(200).json({ isAuthenticated: true });
       }
 
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
