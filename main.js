@@ -122,7 +122,7 @@ app.get("/verify-auth", async (req, res) => {
 
   try {
     // Verifica el token JWT
-    const decodedToken = jwt.verify(authToken, "1Ewe9920"); // Verifica con tu clave secreta
+    const decodedToken = jwt.verify(authToken, "1ewe9920"); // Verifica con tu clave secreta
 
     // El token es válido, busca al usuario en la base de datos (si es necesario)
     const user = await User.findOne({ where: { id: decodedToken.userId } });
