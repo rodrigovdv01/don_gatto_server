@@ -87,11 +87,6 @@ const getMisPedidos = async (req, res) => {
     // Obtén el token de la cookie usando req.cookies
     const authToken = req.cookies.authToken;
 
-    if (!authToken) {
-      // Si no hay token, el usuario no ha iniciado sesión
-      return res.status(401).json({ message: "No está autenticado" });
-    }
-
     try {
       // Verifica el token JWT
       const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
