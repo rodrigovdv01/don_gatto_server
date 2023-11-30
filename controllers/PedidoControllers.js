@@ -83,12 +83,6 @@ const createPedido = async (req, res) => {
 
 const getMisPedidos = async (req, res) => {
   try {
-    // Obtén el token de la cookie
-    const authToken = req.cookies.authToken;
-
-    if (!authToken) {
-      return res.status(401).json({ message: "No estás autenticado" });
-    }
 
     try {
       // Verifica el token JWT para obtener el ID del usuario autenticado
