@@ -8,27 +8,27 @@ const DetallePedido = db.define(
     user_id: {
       type: DataTypes.INTEGER, // ID del producto
       allowNull: true,
-      references: {
-        model: "usuarios", // This should match the actual table name for orders
-        key: "id", // This should match the actual primary key field in the orders table
-      },
+      // references: {
+      //   model: "usuarios", // This should match the actual table name for orders
+      //   key: "id", // This should match the actual primary key field in the orders table
+      // },
     },
     pedido_id: {
       type: DataTypes.INTEGER, // ID del producto
       allowNull: true,
-      references: {
-        model: "pedidos", // This should match the actual table name for orders
-        key: "id", // This should match the actual primary key field in the orders table
-      },
+      // references: {
+      //   model: "pedidos", // This should match the actual table name for orders
+      //   key: "id", // This should match the actual primary key field in the orders table
+      // },
     },
 
     producto_id: {
       type: DataTypes.INTEGER, // ID del producto
       allowNull: true,
-      references: {
-        model: "productos", // This should match the actual table name for orders
-        key: "producto_id", // This should match the actual primary key field in the orders table
-      },
+      // references: {
+      //   model: "productos", // This should match the actual table name for orders
+      //   key: "producto_id", // This should match the actual primary key field in the orders table
+      // },
     },
 
     cantidad: {

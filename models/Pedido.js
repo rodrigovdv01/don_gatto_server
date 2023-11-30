@@ -12,10 +12,10 @@ const Pedido = db.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      references: {
-        model: "usuarios", // Asegúrate de que coincida con el nombre real de la tabla de usuarios
-        key: "id", // Asegúrate de que coincida con el nombre real del campo clave primaria en la tabla de usuarios
-      },
+      // references: {
+      //   model: "usuarios", // Asegúrate de que coincida con el nombre real de la tabla de usuarios
+      //   key: "id", // Asegúrate de que coincida con el nombre real del campo clave primaria en la tabla de usuarios
+      // },
     },
     nombre: {
       type: DataTypes.STRING,

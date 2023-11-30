@@ -1,6 +1,7 @@
 import express from "express";
 import db from "./database/db.js";
 
+import  dotenv from "dotenv";
 //Routes
 import UserRoutes from "./routes/UserRoutes.js";
 import ProductRoutes from "./routes/ProductRoutes.js";
@@ -19,7 +20,9 @@ import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.DATABASE_URL || 3001;
+
+dotenv.config();
 
 app.use(
   fileUpload({
@@ -29,10 +32,11 @@ app.use(
 );
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "https://dongattovapestore.netlify.app/"],
   credentials: true, // Permite el uso de credenciales (cookies)
 };
-
+// Handle preflight requests
+app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 
 app.use(express.json());

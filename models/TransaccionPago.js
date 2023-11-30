@@ -7,10 +7,10 @@ const TransaccionPago = db.define(
     pedido_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: "pedidos", // This should match the actual table name for orders
-        key: "id", // This should match the actual primary key field in the orders table
-      },
+      // references: {
+      //   model: "pedidos", // This should match the actual table name for orders
+      //   key: "id", // This should match the actual primary key field in the orders table
+      // },
     },
     fecha_transaccion: {
       type: DataTypes.DATE,
