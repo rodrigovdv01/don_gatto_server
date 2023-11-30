@@ -5,8 +5,6 @@ import User from "../models/User.js";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
-app.use(cookieParser());
-
 const createDetallePedido = async (req, res) => {
   try {
     // Extrae los datos necesarios del cuerpo de la solicitud
