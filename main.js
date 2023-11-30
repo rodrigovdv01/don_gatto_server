@@ -1,7 +1,7 @@
 import express from "express";
 import db from "./database/db.js";
 
-import  dotenv from "dotenv";
+import dotenv from "dotenv";
 //Routes
 import UserRoutes from "./routes/UserRoutes.js";
 import ProductRoutes from "./routes/ProductRoutes.js";
@@ -42,11 +42,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-
 app.get("/", (req, res) => {
   res.send("Welcome to the root endpoint!");
 });
-
 
 app.use("/products", ProductRoutes); // Ejemplo de ruta protegida
 app.use("/users", UserRoutes);
@@ -116,13 +114,13 @@ app.get("/verify-auth", async (req, res) => {
   const authToken = req.cookies.authToken;
 
   if (!authToken) {
-    // Si no hay token, el usuario no está autenticado
-    return res.status(401).json({ isAuthenticated: false });
+    // Si no hay token, el usuario no ha iniciado sesión
+    return res.json({ isAuthenticated: false, message: "User not logged in" });
   }
 
   try {
     // Verifica el token JWT
-    const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET); // Verifica con tu clave secreta
+    const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
 
     // El token es válido, busca al usuario en la base de datos (si es necesario)
     const user = await User.findOne({ where: { id: decodedToken.userId } });
@@ -140,7 +138,6 @@ app.get("/verify-auth", async (req, res) => {
     res.status(401).json({ isAuthenticated: false });
   }
 });
-
 
 // Ruta de cierre de sesión
 app.get("/logout", (req, res) => {
