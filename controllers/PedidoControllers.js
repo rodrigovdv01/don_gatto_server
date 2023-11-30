@@ -89,7 +89,7 @@ const getMisPedidos = async (req, res) => {
 
     if (!authToken) {
       // Si no hay token, el usuario no ha iniciado sesión
-      return res.status(401).json({ isAuthenticated: false });
+      return res.status(401).json({ isAuthenticated: false, message: "Unauthorized: No token provided" });
     }
 
     try {
@@ -101,7 +101,7 @@ const getMisPedidos = async (req, res) => {
 
       if (!user) {
         // Si el usuario no se encuentra en la base de datos, el token es inválido
-        return res.status(401).json({ isAuthenticated: false });
+        return res.status(401).json({ isAuthenticated: false, message: "Unauthorized: Invalid token" });
       }
 
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
@@ -113,17 +113,14 @@ const getMisPedidos = async (req, res) => {
       res.status(200).json({ isAuthenticated: true, user, pedidos });
     } catch (error) {
       console.error("Error al verificar el token:", error);
-      res
-        .status(401)
-        .json({ isAuthenticated: false, message: "Token inválido" });
+      res.status(401).json({ isAuthenticated: false, message: "Unauthorized: Invalid token" });
     }
   } catch (error) {
     console.error("Error al obtener pedidos:", error);
-    res
-      .status(500)
-      .json({ message: "Error interno del servidor", error: error.message });
+    res.status(500).json({ message: "Error interno del servidor", error: error.message });
   }
 };
+
 
 // Función para obtener todos los pedidos
 const getAllPedidos = async (req, res) => {
