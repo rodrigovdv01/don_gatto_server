@@ -89,7 +89,7 @@ const getMisPedidos = async (req, res) => {
 
     if (!authToken) {
       // Si no hay token, el usuario no ha iniciado sesión
-      return res.status(401).json({ isAuthenticated: false, message: "Unauthorized: No token provided" });
+      return res.status(401).json({ message: "No está autenticado" });
     }
 
     try {
@@ -98,24 +98,30 @@ const getMisPedidos = async (req, res) => {
 
       // El token es válido, busca al usuario en la base de datos (si es necesario)
       const user = await User.findOne({ where: { id: decodedToken.userId } });
-
+      const userId = decodedToken.userId;
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
       const pedidos = await Pedido.findAll({
-        where: { user_id: decodedToken.userId },
+        where: { user_id: userId },
       });
 
       // Puedes devolver la información del usuario y sus pedidos
-      res.status(200).json({ isAuthenticated: true, user, pedidos });
+      res.status(200).json(pedidos);
     } catch (error) {
       console.error("Error al verificar el token:", error);
-      res.status(401).json({ isAuthenticated: false, message: "Unauthorized: Invalid token" });
+      res
+        .status(401)
+        .json({
+          isAuthenticated: false,
+          message: "Unauthorized: Invalid token",
+        });
     }
   } catch (error) {
     console.error("Error al obtener pedidos:", error);
-    res.status(500).json({ message: "Error interno del servidor", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error interno del servidor", error: error.message });
   }
 };
-
 
 // Función para obtener todos los pedidos
 const getAllPedidos = async (req, res) => {
