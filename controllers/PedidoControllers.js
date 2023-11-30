@@ -82,36 +82,37 @@ const createPedido = async (req, res) => {
   }
 };
 
+// Función para obtener los pedidos del usuario en sesión
 const getMisPedidos = async (req, res) => {
   try {
-    // Obtén el token de la cookie usando req.cookies
+    // Obtén el token de la cookie
     const authToken = req.cookies.authToken;
 
-    try {
-      // Verifica el token JWT
-      const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
-
-      // El token es válido, busca al usuario en la base de datos (si es necesario)
-      const user = await User.findOne({ where: { id: decodedToken.userId } });
-      const userId = decodedToken.userId;
-      // Consulta la base de datos para obtener los pedidos del usuario en sesión
-      const pedidos = await Pedido.findAll({
-        where: { user_id: userId },
-      });
-
-      // Puedes devolver la información del usuario y sus pedidos
-      res.status(200).json(pedidos);
-    } catch (error) {
-      console.error("Error al verificar el token:", error);
-      res
-        .status(401)
-        .json({
-          message: "Unauthorized: Invalid token",
-        });
+    if (!authToken) {
+      // Si no hay token, el usuario no ha iniciado sesión
+      return res.status(401).json({ error: "User not logged in" });
     }
+
+    // Verifica el token JWT
+    const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
+
+    // El token es válido, busca al usuario en la base de datos (si es necesario)
+    const user = await User.findOne({ where: { id: decodedToken.userId } });
+
+    if (!user) {
+      // Si el usuario no se encuentra en la base de datos, el token es inválido
+      return res.status(401).json({ error: "Invalid token" });
+    }
+
+    // El usuario está autenticado, obtén sus pedidos
+    const misPedidos = await Pedido.findAll({ where: { userId: user.id } });
+
+    // Devuelve los pedidos del usuario en sesión
+    res.status(200).json(misPedidos);
   } catch (error) {
-    console.error("Error al obtener pedidos:", error);
-    res.status(500).json({ message: "Error interno del servidor", error: error.message });
+    // Si ocurre un error al verificar el token, se considera inválido
+    console.error("Error al obtener los pedidos del usuario:", error);
+    res.status(500).json({ error: "Error al obtener los pedidos del usuario" });
   }
 };
 
