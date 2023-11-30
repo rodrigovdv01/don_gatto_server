@@ -38,7 +38,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-// Middleware de autenticación personalizado
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the root endpoint!");
+});
 
 // Aplicar el middleware de verificación de token a las rutas protegidas
 app.use("/products", ProductRoutes); // Ejemplo de ruta protegida
