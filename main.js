@@ -20,7 +20,7 @@ import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 
 const app = express();
-const port = process.env.DATABASE_URL || 3001;
+const port = process.env.PORT || 3001;
 
 dotenv.config();
 
