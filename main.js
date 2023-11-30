@@ -66,37 +66,6 @@ DetallePedido.associate = (models) => {
   DetallePedido.belongsTo(models.Pedido, { foreignKey: "pedido_id" });
 };
 
-// Ruta para verificar la autenticación
-app.get("/verify-auth", async (req, res) => {
-  // Obtén el token de la cookie
-  const authToken = req.cookies.authToken;
-
-  if (!authToken) {
-    // Si no hay token, el usuario no está autenticado
-    return res.status(401).json({ isAuthenticated: false });
-  }
-
-  try {
-    // Verifica el token JWT
-    const decodedToken = jwt.verify(authToken, "1Ewe9920"); // Verifica con tu clave secreta
-
-    // El token es válido, busca al usuario en la base de datos (si es necesario)
-    const user = await User.findOne({ where: { id: decodedToken.userId } });
-
-    if (!user) {
-      // Si el usuario no se encuentra en la base de datos, el token es inválido
-      return res.status(401).json({ isAuthenticated: false });
-    }
-
-    // El usuario está autenticado y puedes devolver su información
-    res.json({ isAuthenticated: true, user });
-  } catch (error) {
-    // Si ocurre un error al verificar el token, se considera inválido
-    console.error("Error al verificar el token:", error);
-    res.status(401).json({ isAuthenticated: false });
-  }
-});
-
 // Ruta de inicio de sesión
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -140,6 +109,39 @@ app.post("/login", async (req, res) => {
       .json({ Login: false, message: "Error interno del servidor" });
   }
 });
+
+// Ruta para verificar la autenticación
+app.get("/verify-auth", async (req, res) => {
+  // Obtén el token de la cookie
+  const authToken = req.cookies.authToken;
+
+  if (!authToken) {
+    // Si no hay token, el usuario no está autenticado
+    return res.status(401).json({ isAuthenticated: false });
+  }
+
+  try {
+    // Verifica el token JWT
+    const decodedToken = jwt.verify(authToken, "1Ewe9920"); // Verifica con tu clave secreta
+
+    // El token es válido, busca al usuario en la base de datos (si es necesario)
+    const user = await User.findOne({ where: { id: decodedToken.userId } });
+
+    if (!user) {
+      // Si el usuario no se encuentra en la base de datos, el token es inválido
+      return res.status(401).json({ isAuthenticated: false });
+    }
+
+    // El usuario está autenticado y puedes devolver su información
+    res.json({ isAuthenticated: true, user });
+  } catch (error) {
+    // Si ocurre un error al verificar el token, se considera inválido
+    console.error("Error al verificar el token:", error);
+    res.status(401).json({ isAuthenticated: false });
+  }
+});
+
+
 // Ruta de cierre de sesión
 app.get("/logout", (req, res) => {
   try {
