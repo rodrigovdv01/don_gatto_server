@@ -97,7 +97,7 @@ const getMisPedidos = async (req, res) => {
       const user = await User.findOne({ where: { id: decodedToken.userId } });
 
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
-      const pedidos = await Pedido.findAll({ where: { user_id: user } });
+      const pedidos = await Pedido.findAll({ where: { user_id: user.id } });
 
       res.status(200).json(pedidos);
     } catch (error) {
