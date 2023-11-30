@@ -2,6 +2,7 @@
 import Pedido from "../models/Pedido.js";
 import DetallePedido from "../models/DetallePedido.js";
 import User from "../models/User.js";
+import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
 const createDetallePedido = async (req, res) => {
@@ -84,25 +85,41 @@ const createPedido = async (req, res) => {
 
 const getMisPedidos = async (req, res) => {
   try {
-    // Obtén el token del encabezado de autorización
+    // Obtén el token de la cookie
     const authToken = req.cookies.authToken;
 
     if (!authToken) {
-      return res.status(401).json({ message: "No estás autenticado" });
+      // Si no hay token, el usuario no ha iniciado sesión
+      return res.json({
+        isAuthenticated: false,
+        message: "User not logged in",
+      });
     }
 
     try {
-      // Verifica el token JWT para obtener el ID del usuario autenticado
+      // Verifica el token JWT
       const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
-      const userId = decodedToken.userId;
+
+      // El token es válido, busca al usuario en la base de datos (si es necesario)
+      const user = await User.findOne({ where: { id: decodedToken.userId } });
+
+      if (!user) {
+        // Si el usuario no se encuentra en la base de datos, el token es inválido
+        return res.status(401).json({ isAuthenticated: false });
+      }
 
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
-      const pedidos = await Pedido.findAll({ where: { user_id: userId } });
+      const pedidos = await Pedido.findAll({
+        where: { user_id: decodedToken.userId },
+      });
 
-      res.status(200).json(pedidos);
+      // Puedes devolver la información del usuario y sus pedidos
+      res.status(200).json({ isAuthenticated: true, user, pedidos });
     } catch (error) {
       console.error("Error al verificar el token:", error);
-      res.status(401).json({ message: "Token inválido" });
+      res
+        .status(401)
+        .json({ isAuthenticated: false, message: "Token inválido" });
     }
   } catch (error) {
     console.error("Error al obtener pedidos:", error);
