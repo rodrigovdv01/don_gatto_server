@@ -1,5 +1,4 @@
 import User from "../models/User.js";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../config.js"; // Import the jwtSecret directly
 import { serialize } from "cookie"; // Import the cookie library
