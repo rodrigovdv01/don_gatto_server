@@ -91,7 +91,7 @@ const getMisPedidos = async (req, res) => {
 
     try {
       // Verificar el token para obtener la información adicional
-      const decodedToken = jwt.verify(authToken, "tuClaveSecreta");
+      const decodedToken = jwt.verify(authToken, "1Ewe9920.");
       const userId = decodedToken.userId;
 
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
