@@ -86,8 +86,6 @@ const getMisPedidos = async (req, res) => {
   try {
     // Obtén el token de la cookie usando req.cookies
     const authToken = req.cookies.authToken;
-
-    try {
       // Verifica el token JWT
       const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
 
@@ -106,12 +104,7 @@ const getMisPedidos = async (req, res) => {
 
       // Puedes devolver la información del usuario y sus pedidos
       res.status(200).json({ isAuthenticated: true, user, pedidos });
-    } catch (error) {
-      console.error("Error al verificar el token:", error);
-      res
-        .status(401)
-        .json({ isAuthenticated: false, message: "Token inválido" });
-    }
+    
   } catch (error) {
     console.error("Error al obtener pedidos:", error);
     res
