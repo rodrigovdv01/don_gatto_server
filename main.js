@@ -1,7 +1,7 @@
 import express from "express";
 import db from "./database/db.js";
 
-import  dotenv from "dotenv";
+import dotenv from "dotenv";
 //Routes
 import UserRoutes from "./routes/UserRoutes.js";
 import ProductRoutes from "./routes/ProductRoutes.js";
@@ -42,11 +42,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-
 app.get("/", (req, res) => {
   res.send("Welcome to the root endpoint!");
 });
-
 
 app.use("/products", ProductRoutes); // Ejemplo de ruta protegida
 app.use("/users", UserRoutes);
@@ -141,10 +139,25 @@ app.post("/login", async (req, res) => {
   }
 });
 // Ruta de cierre de sesión
+// Ruta de cierre de sesión
 app.get("/logout", (req, res) => {
   try {
+    // Obtén el token de la cookie
+    const authToken = req.cookies.authToken;
+
+    if (!authToken) {
+      // Si no hay token, el usuario no está autenticado
+      const errorMessage = "No hay token de autenticación";
+      console.error(errorMessage);
+      return res.status(401).json({ message: errorMessage });
+    }
+
+    // Elimina la sesión del usuario en el servidor (puedes agregar tu lógica de sesión aquí)
+    // ...
+
     // Utiliza cookieParser para eliminar la cookie
     res.clearCookie("authToken");
+
     const successMessage = "Sesión cerrada exitosamente";
     console.log(successMessage);
     res.json({ message: successMessage });
