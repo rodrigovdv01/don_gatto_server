@@ -41,6 +41,10 @@ app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
+app.use((req, res, next) => {
+  console.log("Nombres de cookies:", Object.keys(req.cookies).join(", "));
+  next();
+});
 
 app.get("/", (req, res) => {
   res.send("Welcome to the root endpoint!");
@@ -49,12 +53,6 @@ app.get("/", (req, res) => {
 app.use("/products", ProductRoutes); // Ejemplo de ruta protegida
 app.use("/users", UserRoutes);
 app.use("/pedidos", PedidoRoutes);
-
-// Middleware para depuración de cookies
-app.use((req, res, next) => {
-  console.log("Nombres de cookies:", Object.keys(req.cookies).join(", "));
-  next();
-});
 
 Pedido.associate = (models) => {
   Pedido.hasMany(models.DetallePedido, { foreignKey: "pedido_id" });
