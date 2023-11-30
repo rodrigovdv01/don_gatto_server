@@ -99,11 +99,6 @@ const getMisPedidos = async (req, res) => {
       // El token es válido, busca al usuario en la base de datos (si es necesario)
       const user = await User.findOne({ where: { id: decodedToken.userId } });
 
-      if (!user) {
-        // Si el usuario no se encuentra en la base de datos, el token es inválido
-        return res.status(401).json({ isAuthenticated: false, message: "Unauthorized: Invalid token" });
-      }
-
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
       const pedidos = await Pedido.findAll({
         where: { user_id: decodedToken.userId },
