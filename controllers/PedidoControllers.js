@@ -2,7 +2,6 @@
 import Pedido from "../models/Pedido.js";
 import DetallePedido from "../models/DetallePedido.js";
 import User from "../models/User.js";
-import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
 const createDetallePedido = async (req, res) => {
