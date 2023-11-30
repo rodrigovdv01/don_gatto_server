@@ -1,6 +1,7 @@
 // Importa el modelo de Pedido si aún no lo has hecho
 import Pedido from "../models/Pedido.js";
 import DetallePedido from "../models/DetallePedido.js";
+import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 
 const createDetallePedido = async (req, res) => {
@@ -91,11 +92,12 @@ const getMisPedidos = async (req, res) => {
 
     try {
       // Verificar el token para obtener la información adicional
-      const decodedToken = jwt.verify(authToken, "1Ewe9920");
-      const userId = decodedToken.userId;
+      const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
+      // El token es válido, busca al usuario en la base de datos (si es necesario)
+      const user = await User.findOne({ where: { id: decodedToken.userId } });
 
       // Consulta la base de datos para obtener los pedidos del usuario en sesión
-      const pedidos = await Pedido.findAll({ where: { user_id: userId } });
+      const pedidos = await Pedido.findAll({ where: { user_id: user } });
 
       res.status(200).json(pedidos);
     } catch (error) {
