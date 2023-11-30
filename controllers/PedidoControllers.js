@@ -85,7 +85,7 @@ const createPedido = async (req, res) => {
 const getMisPedidos = async (req, res) => {
   try {
     // Obtén el token del encabezado de autorización
-    const authToken = req.headers.authorization;
+    const authToken = req.cookies.authToken;
 
     if (!authToken) {
       return res.status(401).json({ message: "No estás autenticado" });
