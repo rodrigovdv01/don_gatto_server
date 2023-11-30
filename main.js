@@ -36,8 +36,8 @@ const corsOptions = {
   credentials: true, // Permite el uso de credenciales (cookies)
 };
 // Handle preflight requests
-app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
