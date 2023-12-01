@@ -122,8 +122,8 @@ app.post("/login", async (req, res) => {
     // Configurar el token en una cookie HTTP-only
     res.cookie("authToken", token, {
       httpOnly: true, // La cookie no es accesible desde JavaScript en el cliente
-      secure: true, // Cambia a true en producción si utilizas HTTPS
-      sameSite: "None", // Ajusta según tus necesidades
+      secure: false, // Cambia a true en producción si utilizas HTTPS
+      sameSite: "strict", // Ajusta según tus necesidades
       path: "/", // Cookie válida en todo el dominio
       maxAge: 3600000, // Tiempo de vida de la cookie en milisegundos (1 hora)
     });
