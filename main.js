@@ -32,7 +32,11 @@ app.use(
 );
 
 const corsOptions = {
-  origin: ["https://dongattovapestore.netlify.app", "http://localhost:3000", "http://localhost:3002"],
+  origin: [
+    "https://dongattovapestore.netlify.app",
+    "http://localhost:3000",
+    "http://localhost:3002",
+  ],
   credentials: true, // Permite el uso de credenciales (cookies)
 };
 // Handle preflight requests
@@ -141,8 +145,9 @@ app.post("/login", async (req, res) => {
 // Ruta de cierre de sesión
 app.get("/logout", (req, res) => {
   try {
-    // Utiliza cookieParser para eliminar la cookie
-    res.clearCookie("authTokenServer"); // Clear the "authToken" cookie
+    // Utiliza cookieParser para eliminar las cookies
+    res.clearCookie("authToken"); // Clear the "authToken" cookie
+    res.clearCookie("authTokenServer"); // Clear the "authTokenServer" cookie
 
     const successMessage = "Sesión cerrada exitosamente";
     console.log(successMessage);
@@ -152,7 +157,6 @@ app.get("/logout", (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 });
-
 
 // Sincroniza los modelos con la base de datos y escucha en el puerto especificado
 db.sync()
