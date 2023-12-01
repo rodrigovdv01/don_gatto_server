@@ -32,7 +32,7 @@ app.use(
 );
 
 const corsOptions = {
-  origin: ["https://dongattovapestore.netlify.app", "http://localhost:3000"],
+  origin: ["https://dongattovapestore.netlify.app", "http://localhost:3000", "http://localhost:3002"],
   credentials: true, // Permite el uso de credenciales (cookies)
 };
 // Handle preflight requests
@@ -61,6 +61,37 @@ Pedido.associate = (models) => {
 DetallePedido.associate = (models) => {
   DetallePedido.belongsTo(models.Pedido, { foreignKey: "pedido_id" });
 };
+
+// Ruta para verificar la autenticación
+app.use("/verify-auth", async (req, res, next) => {
+  // Obtén el token de la cookie
+  const authToken = req.cookies.authToken;
+
+  if (!authToken) {
+    // Si no hay token, el usuario no ha iniciado sesión
+    return res.json({ isAuthenticated: false, message: "User not logged in" });
+  }
+
+  try {
+    // Verifica el token JWT
+    const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
+
+    // El token es válido, busca al usuario en la base de datos (si es necesario)
+    const user = await User.findOne({ where: { id: decodedToken.userId } });
+
+    if (!user) {
+      // Si el usuario no se encuentra en la base de datos, el token es inválido
+      return res.status(401).json({ isAuthenticated: false });
+    }
+
+    // El usuario está autenticado y puedes devolver su información
+    res.json({ isAuthenticated: true, user });
+  } catch (error) {
+    // Si ocurre un error al verificar el token, se considera inválido
+    console.error("Error al verificar el token:", error);
+    res.status(401).json({ isAuthenticated: false });
+  }
+});
 
 // Ruta de inicio de sesión
 app.post("/login", async (req, res) => {
@@ -91,8 +122,8 @@ app.post("/login", async (req, res) => {
     // Configurar el token en una cookie HTTP-only
     res.cookie("authToken", token, {
       httpOnly: true, // La cookie no es accesible desde JavaScript en el cliente
-      secure: false, // Cambia a true en producción si utilizas HTTPS
-      sameSite: "strict", // Ajusta según tus necesidades
+      secure: true, // Cambia a true en producción si utilizas HTTPS
+      sameSite: "None", // Ajusta según tus necesidades
       path: "/", // Cookie válida en todo el dominio
       maxAge: 3600000, // Tiempo de vida de la cookie en milisegundos (1 hora)
     });
@@ -103,37 +134,6 @@ app.post("/login", async (req, res) => {
     res
       .status(500)
       .json({ Login: false, message: "Error interno del servidor" });
-  }
-});
-
-// Ruta para verificar la autenticación
-app.get("/verify-auth", async (req, res) => {
-  // Obtén el token de la cookie
-  const authToken = req.cookies.authToken;
-
-  if (!authToken) {
-    // Si no hay token, el usuario no ha iniciado sesión
-    return res.json({ isAuthenticated: false, message: "User not logged in" });
-  }
-
-  try {
-    // Verifica el token JWT
-    const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
-
-    // El token es válido, busca al usuario en la base de datos (si es necesario)
-    const user = await User.findOne({ where: { id: decodedToken.userId } });
-
-    if (!user) {
-      // Si el usuario no se encuentra en la base de datos, el token es inválido
-      return res.status(401).json({ isAuthenticated: false });
-    }
-
-    // El usuario está autenticado y puedes devolver su información
-    res.json({ isAuthenticated: true, user });
-  } catch (error) {
-    // Si ocurre un error al verificar el token, se considera inválido
-    console.error("Error al verificar el token:", error);
-    res.status(401).json({ isAuthenticated: false });
   }
 });
 
