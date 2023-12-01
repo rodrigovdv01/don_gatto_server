@@ -32,11 +32,7 @@ app.use(
 );
 
 const corsOptions = {
-  origin: [
-    "https://dongattovapestore.netlify.app",
-    "http://localhost:3000",
-    "http://localhost:3002",
-  ],
+  origin: ["https://dongattovapestore.netlify.app", "http://localhost:3000", "http://localhost:3002"],
   credentials: true, // Permite el uso de credenciales (cookies)
 };
 // Handle preflight requests
@@ -124,7 +120,7 @@ app.post("/login", async (req, res) => {
     });
 
     // Configurar el token en una cookie HTTP-only
-    res.cookie("authTokenServer", token, {
+    res.cookie("authToken", token, {
       httpOnly: true, // La cookie no es accesible desde JavaScript en el cliente
       secure: true, // Cambia a true en producción si utilizas HTTPS
       sameSite: "None", // Ajusta según tus necesidades
@@ -156,6 +152,7 @@ app.get("/logout", (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 });
+
 
 // Sincroniza los modelos con la base de datos y escucha en el puerto especificado
 db.sync()
