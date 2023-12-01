@@ -65,7 +65,7 @@ DetallePedido.associate = (models) => {
 // Ruta para verificar la autenticación
 app.use("/verify-auth", async (req, res, next) => {
   // Obtén el token de la cookie
-  const authToken = req.cookies.authToken;
+  const authToken = req.cookies.authTokenServer;
 
   if (!authToken) {
     // Si no hay token, el usuario no ha iniciado sesión
