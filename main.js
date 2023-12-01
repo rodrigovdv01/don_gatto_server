@@ -124,7 +124,7 @@ app.post("/login", async (req, res) => {
     });
 
     // Configurar el token en una cookie HTTP-only
-    res.cookie("authToken", token, {
+    res.cookie("authTokenServer", token, {
       httpOnly: true, // La cookie no es accesible desde JavaScript en el cliente
       secure: true, // Cambia a true en producción si utilizas HTTPS
       sameSite: "None", // Ajusta según tus necesidades
@@ -146,7 +146,7 @@ app.post("/login", async (req, res) => {
 app.get("/logout", (req, res) => {
   try {
     // Utiliza cookieParser para eliminar la cookie
-    res.clearCookie("authToken"); // Clear the "authToken" cookie
+    res.clearCookie("authTokenServer"); // Clear the "authToken" cookie
 
     const successMessage = "Sesión cerrada exitosamente";
     console.log(successMessage);
