@@ -31,7 +31,7 @@ const db = new Sequelize(
         f8LDmBxrThaA63p4ZUWiABqvDA1VZDRIuJK58bRQKfJPIx/abKwfROHdI3hRW8cW
         -----END CERTIFICATE-----
         `, // Reemplaza con el nombre y la ubicación correctos del archivo
-        rejectUnauthorized: true, // Desactivar la verificación SSL
+        rejectUnauthorized: false, // Desactivar la verificación SSL
       },
     },
   }
