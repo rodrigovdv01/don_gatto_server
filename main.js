@@ -37,7 +37,7 @@ const corsOptions = {
     "http://localhost:3000",
     "http://localhost:3002",
   ],
-  credentials: true, // Permite el uso de credenciales (cookies)
+  credentials: true, // Permite el uso de credencial es (cookies)
 };
 // Handle preflight requests
 app.use(cors(corsOptions));
