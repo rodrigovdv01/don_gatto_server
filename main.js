@@ -21,7 +21,7 @@ import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 
 const app = express();
-const port = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001;
 
 dotenv.config();
 
@@ -162,10 +162,34 @@ app.get("/logout", (req, res) => {
 db.sync()
   .then(() => {
     console.log("Modelos sincronizados con la base de datos");
-    app.listen(port, () => {
-      console.log(`Servidor en funcionamiento en el puerto ${port}`);
-    });
   })
   .catch((error) => {
     console.error("Error al sincronizar modelos:", error);
   });
+
+// Middleware para obtener el ID del usuario desde el token JWT
+const getUserIdFromToken = async (req, res, next) => {
+  // Obtén el token de la cookie
+  const authToken = req.cookies.authTokenServer;
+
+  if (authToken) {
+    try {
+      // Verifica el token JWT
+      const decodedToken = jwt.verify(authToken, jwtSecret);
+
+      // Agrega el ID del usuario a la solicitud
+      req.userId = decodedToken.userId;
+    } catch (error) {
+      console.error("Error al verificar el token:", error);
+    }
+  }
+
+  next();
+};
+
+// Aplicar el middleware getUserIdFromToken a todas las rutas
+app.use(getUserIdFromToken);
+
+app.listen(PORT, () => {
+  console.log(`Servidor Express.js en funcionamiento en el puerto ${PORT}`);
+});
