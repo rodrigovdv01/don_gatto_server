@@ -11,7 +11,7 @@ import User from "./models/User.js";
 import Producto from "./models/Producto.js";
 import Pedido from "./models/Pedido.js";
 import DetallePedido from "./models/DetallePedido.js";
-import TransaccionesPago from "./models/TransaccionPago.js";
+import TransaccionPago from "./models/TransaccionPago.js";
 //otros
 import cors from "cors";
 import bcrypt from "bcryptjs";
@@ -58,7 +58,7 @@ app.use("/products", ProductRoutes); // Ejemplo de ruta protegida
 app.use("/users", UserRoutes);
 app.use("/pedidos", PedidoRoutes);
 
-app.use("/transacciones_pago", TransaccionesPago);
+app.use("/transacciones_pago", TransaccionPago);
 
 Pedido.associate = (models) => {
   Pedido.hasMany(models.DetallePedido, { foreignKey: "pedido_id" });

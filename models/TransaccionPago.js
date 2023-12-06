@@ -4,13 +4,13 @@ import db from "../database/db.js";
 const TransaccionPago = db.define(
   "transacciones_pago",
   {
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     pedido_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      // references: {
-      //   model: "pedidos", // This should match the actual table name for orders
-      //   key: "id", // This should match the actual primary key field in the orders table
-      // },
+      allowNull: true,
     },
     fecha_transaccion: {
       type: DataTypes.DATE,
@@ -18,19 +18,15 @@ const TransaccionPago = db.define(
     },
     metodo_pago: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    direccion_facturacion: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     monto_transaccion: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
     },
     estado_transaccion: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.ENUM('Pendiente', 'Pagado', 'Rechazada'),
+      allowNull: true,
     },
   },
   {
