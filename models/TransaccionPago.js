@@ -30,7 +30,7 @@ const TransaccionPago = db.define(
     },
   },
   {
-    tableName: "transacciones_pago", // Name of the table in the database
+    tableName: "transacciones_pago", // Name of the table  in the database
   }
 );
 
