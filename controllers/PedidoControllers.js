@@ -1,8 +1,10 @@
 // Importa el modelo de Pedido si aún no lo has hecho
 import Pedido from "../models/Pedido.js";
 import DetallePedido from "../models/DetallePedido.js";
-import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import TransaccionPago from "../models/TransaccionPago.js";
+
+const jwtSecret = process.env.JWT_SECRET;
 
 const createDetallePedido = async (req, res) => {
   try {
@@ -13,20 +15,12 @@ const createDetallePedido = async (req, res) => {
       cantidad,
       precio_unitario,
       user_id,
-      selectedEntrada,
-      selectedSegundo,
-      selectedPostre,
-      selectedBebida,
     } = req.body;
     // Crea un nuevo detalle de pedido en la base de datos
     const nuevoDetallePedido = await DetallePedido.create({
       user_id,
       pedido_id,
       producto_id,
-      selectedEntrada,
-      selectedSegundo,
-      selectedPostre,
-      selectedBebida,
       cantidad,
       precio_unitario,
     });
@@ -69,7 +63,7 @@ const createPedido = async (req, res) => {
       user_id,
       monto_total,
       email,
-      estado_pedido: estado_pedido || "Recibido", // Establece un valor predeterminado si no se proporciona estado_pedido
+      estado_pedido: estado_pedido || "Activo", // Establece un valor predeterminado si no se proporciona estado_pedido
     });
 
     res.status(201).json({
@@ -82,37 +76,58 @@ const createPedido = async (req, res) => {
   }
 };
 
-// Función para obtener los pedidos del usuario en sesión
+// Controlador para obtener el método de pago de un pedido por su ID
+export const getTransaccionPago = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Busca el pedido por su ID
+    const pedido = await Pedido.findById(id);
+
+    if (!pedido) {
+      return res.status(404).json({ message: 'Pedido no encontrado' });
+    }
+
+    // Si el pedido existe, obtén el método de pago asociado a él
+    const metodoPago = await TransaccionPago.findById(pedido.id);
+
+    if (!metodoPago) {
+      return res.status(404).json({ message: 'Método de pago no encontrado' });
+    }
+
+    // Devuelve el método de pago como respuesta
+    res.status(200).json({ metodoPago });
+  } catch (error) {
+    console.error('Error al obtener el método de pago:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
+
 const getMisPedidos = async (req, res) => {
   try {
     // Obtén el token de la cookie
-    const authToken = req.cookies.authToken;
+    const token = req.cookies.authTokenServer;
 
-    if (!authToken) {
-      // Si no hay token, el usuario no ha iniciado sesión
-      return res.status(401).json({ error: "User not logged in" });
+    if (!token) {
+      return res.status(401).json({ message: "No estás autenticado" });
     }
 
-    // Verifica el token JWT
-    const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
+    try {
+      // Verifica el token JWT para obtener el ID del usuario autenticado
+      const decodedToken = jwt.verify(token, jwtSecret); // Verifica con tu clave secreta
+      const userId = decodedToken.userId;
 
-    // El token es válido, busca al usuario en la base de datos (si es necesario)
-    const user = await User.findOne({ where: { id: decodedToken.userId } });
+      // Consulta la base de datos para obtener los pedidos del usuario en sesión
+      const pedidos = await Pedido.findAll({ where: { user_id: userId } });
 
-    if (!user) {
-      // Si el usuario no se encuentra en la base de datos, el token es inválido
-      return res.status(401).json({ error: "Invalid token" });
+      res.status(200).json(pedidos);
+    } catch (error) {
+      console.error("Error al verificar el token:", error);
+      res.status(401).json({ message: "Token inválido" });
     }
-
-    // El usuario está autenticado, obtén sus pedidos
-    const misPedidos = await Pedido.findAll({ where: { userId: user.id } });
-
-    // Devuelve los pedidos del usuario en sesión
-    res.status(200).json(misPedidos);
   } catch (error) {
-    // Si ocurre un error al verificar el token, se considera inválido
-    console.error("Error al obtener los pedidos del usuario:", error);
-    res.status(500).json({ error: "Error al obtener los pedidos del usuario" });
+    console.error("Error al obtener pedidos:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
@@ -122,7 +137,7 @@ const getAllPedidos = async (req, res) => {
     const pedidos = await Pedido.findAll();
     return res.status(200).json(pedidos);
   } catch (error) {
-    return res.status(500).json({ error: "Error en el servidor al obtener pedidos" });
+    return res.status(500).json({ error: "Error al obtener los pedidos" });
   }
 };
 
@@ -133,7 +148,7 @@ const getDetalles = async (req, res) => {
     // Primero, busca el pedido por su ID
     const pedido = await Pedido.findByPk(id);
     if (!pedido) {
-      return res.status(404).json({ error: "Pedido no encontrado por el servidor" });
+      return res.status(404).json({ error: "Pedido no encontrado" });
     }
 
     // Luego, busca los detalles de pedido asociados a ese pedido
@@ -146,7 +161,7 @@ const getDetalles = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ error: "Error en el servidor al obtener los detalles del pedido" });
+      .json({ error: "Error al obtener los detalles del pedido" });
   }
 };
 
