@@ -147,7 +147,6 @@ app.post("/login", async (req, res) => {
 app.get("/logout", (req, res) => {
   try {
     // Utiliza cookieParser para eliminar las cookies
-    res.clearCookie("authToken"); // Clear the "authToken" cookie
     res.clearCookie("authTokenServer"); // Clear the "authTokenServer" cookie
 
     const successMessage = "Sesión cerrada exitosamente";
