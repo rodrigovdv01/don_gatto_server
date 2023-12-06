@@ -12,10 +12,6 @@ const Pedido = db.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      // references: {
-      //   model: "usuarios", // Asegúrate de que coincida con el nombre real de la tabla de usuarios
-      //   key: "id", // Asegúrate de que coincida con el nombre real del campo clave primaria en la tabla de usuarios
-      // },
     },
     nombre: {
       type: DataTypes.STRING,
@@ -37,13 +33,13 @@ const Pedido = db.define(
       allowNull: false,
     },
     estado_pedido: {
-      type: DataTypes.ENUM('Recibido', 'Aprobado', 'En preparación', 'En camino', 'Entregado'),
+      type: DataTypes.ENUM('Activo', 'En camino', 'Finalizado'),
       allowNull: false,
     },
     
   },
   {
-    tableName: "pedidos", // Nombre real de la tabla en la base de datos
+    tableName: "pedidos", // Nombrre real de la tabla en la base de datos
   }
 );
 
