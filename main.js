@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import UserRoutes from "./routes/UserRoutes.js";
 import ProductRoutes from "./routes/ProductRoutes.js";
 import PedidoRoutes from "./routes/PedidoRoutes.js";
+import TransaccionRoutes from "./routes/TransaccionRoutes.js";
 //Models
 import User from "./models/User.js";
 import Producto from "./models/Producto.js";
@@ -57,8 +58,7 @@ app.get("/", (req, res) => {
 app.use("/products", ProductRoutes); // Ejemplo de ruta protegida
 app.use("/users", UserRoutes);
 app.use("/pedidos", PedidoRoutes);
-
-app.use("/transacciones_pago", TransaccionPago);
+app.use("/transacciones_pago", TransaccionRoutes);
 
 Pedido.associate = (models) => {
   Pedido.hasMany(models.DetallePedido, { foreignKey: "pedido_id" });
