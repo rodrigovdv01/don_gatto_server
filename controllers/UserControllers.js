@@ -62,7 +62,7 @@ export const createUser = async (req, res) => {
       email,
       telefono,
       password,
-      direccion,
+      direccion_envio,
       level,
     });
 
@@ -88,7 +88,7 @@ export const updateUser = async (req, res) => {
       apellido, // Nuevo apellido
       email, // Nuevo email
       telefono, // Nuevo teléfono
-      direccion, // Nueva dirección
+      direccion_envio, // Nueva dirección
       level, // Nuevo nivel
     } = req.body;
 
@@ -106,7 +106,7 @@ export const updateUser = async (req, res) => {
     if (apellido) updatedFields.apellido = apellido;
     if (email) updatedFields.email = email;
     if (telefono) updatedFields.telefono = telefono;
-    if (direccion) updatedFields.direccion = direccion;
+    if (direccion_envio) updatedFields.direccion_envio = direccion_envio;
     if (level) updatedFields.level = level;
 
     // Actualiza la base de datos con los campos proporcionados
@@ -203,4 +203,8 @@ export const signOut = async (req, res) => {
     })
   );
   res.json({ message: "Sesión cerrada exitosamente" });
+  res.clearCookie("authTokenServer"); // Clear the "authTokenServer" cookie
+    
+    res.clearCookie("authToken"); // Clear the "authTokenServer" cookie
+
 };
