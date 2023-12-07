@@ -36,7 +36,7 @@ export const checkAuth = async (req, res) => {
       return res.json({ authenticated: false });
     }
 
-    // If everything checks out, return user data as authenticated
+    // If everything checks out, return user data as authenticated 
     return res.json({ authenticated: true, user: user });
   } catch (error) {
     console.error("Error checking authentication:", error);
