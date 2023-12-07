@@ -112,7 +112,7 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ message: errorMessage });
     }
 
-    const isPasswordValid = await bcrypt.compareSync(password, user.password);
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
 
     if (!isPasswordValid) {
       const errorMessage = "Contraseña incorrecta";
@@ -121,7 +121,7 @@ app.post("/login", async (req, res) => {
     }
 
     // Crear un token JWT
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user.id }, jwtSecret, {
       expiresIn: "1h",
     });
 
@@ -142,17 +142,24 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Ruta de cierre de sesión
-// Ruta de cierre de sesión
 app.get("/logout", (req, res) => {
   try {
-    // Utiliza cookieParser para eliminar las cookies
+    // Utiliza cookieParser para obtener el token de la cookie
+    const token = req.cookies.authTokenServer;
+
+    if (!token) {
+      const errorMessage = "No hay token para eliminar";
+      console.error(errorMessage);
+      return res.status(400).json({ message: errorMessage });
+    }
+
+    // Elimina la cookie estableciendo una fecha de expiración en el pasado
     res.clearCookie("authTokenServer", {
       httpOnly: true,
       secure: true, // Set to true in production if using HTTPS
       sameSite: "None", // Required for cross-site cookies
       path: "/",
-      maxAge: 3600000,
+      expires: new Date(0),
     });
 
     const successMessage = "Sesión cerrada exitosamente";
