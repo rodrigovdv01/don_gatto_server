@@ -147,9 +147,13 @@ app.post("/login", async (req, res) => {
 app.get("/logout", (req, res) => {
   try {
     // Utiliza cookieParser para eliminar las cookies
-    res.clearCookie("authTokenServer"); // Clear the "authTokenServer" cookie
-    
-    res.clearCookie("authToken"); // Clear the "authTokenServer" cookie
+    res.clearCookie("authTokenServer", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Set to true in production if using HTTPS
+      sameSite: "None", // Required for cross-site cookies
+      path: "/",
+      maxAge: 3600000,
+    });
 
     const successMessage = "Sesión cerrada exitosamente";
     console.log(successMessage);
