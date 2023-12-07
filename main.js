@@ -147,7 +147,7 @@ app.post("/login", async (req, res) => {
 app.get("/logout", (req, res) => {
   try {
     // Utiliza cookieParser para eliminar las cookies
-    res.clearCookie("authTokenServer", token, {
+    res.clearCookie("authTokenServer", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Set to true in production if using HTTPS
       sameSite: "None", // Required for cross-site cookies
