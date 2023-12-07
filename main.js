@@ -121,7 +121,7 @@ app.post("/login", async (req, res) => {
     }
 
     // Crear un token JWT
-    const token = jwt.sign({ userId: user.id }, "1Ewe9920", {
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
@@ -188,7 +188,7 @@ const getUserIdFromToken = async (req, res, next) => {
   if (authToken) {
     try {
       // Verifica el token JWT
-      const decodedToken = jwt.verify(authToken, "1Ewe9920");
+      const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
 
       // Agrega el ID del usuario a la solicitud
       req.userId = decodedToken.userId;
