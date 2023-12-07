@@ -2,8 +2,8 @@ import { Sequelize } from "sequelize";
 
 const db = new Sequelize(
   "don-gatto-mysql",
-  "u7r7omdq5b2k4sqhq2tn",
-  "pscale_pw_dTJrKgxpbAqIuNUCe3Uw4NfnMIi0Xs2p3oV3joKUecp",
+  "rlxhn3p6pec9ci2hbquf",
+  "pscale_pw_765V26pa5VDvrMAyLawy7UIKDdElbmHOcZ5BeYYT3Xu",
   {
     host: "aws.connect.psdb.cloud",
     port: 3306,
