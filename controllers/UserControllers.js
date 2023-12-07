@@ -1,8 +1,10 @@
 import User from "../models/User.js";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs"; // Updated import statement
-import { jwtSecret } from "../config.js"; // Import the jwtSecret directly
 import { serialize } from "cookie"; // Import the cookie library
+
+
+const jwtSecret = process.env.JWT_SECRET || '1Ewe9920';
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -46,7 +48,7 @@ export const checkAuth = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const { nombre, apellido, email, telefono, password, direccion, level } =
+    const { nombre, apellido, email, telefono, password, direccion_envio, level } =
       req.body;
 
     // Verificar si el usuario ya existe en la base de datos
@@ -62,12 +64,12 @@ export const createUser = async (req, res) => {
       email,
       telefono,
       password,
-      direccion,
+      direccion_envio,
       level,
     });
 
     // Hashear la contraseña después de almacenarla en la base de datos
-    const hashedPassword = await bcrypt.hashSync(newUser.password, 10);
+    const hashedPassword = await bcrypt.hash(newUser.password, 10);
     newUser.password = hashedPassword;
     
     res.status(201).json({
@@ -88,7 +90,7 @@ export const updateUser = async (req, res) => {
       apellido, // Nuevo apellido
       email, // Nuevo email
       telefono, // Nuevo teléfono
-      direccion, // Nueva dirección
+      direccion_envio, // Nueva dirección
       level, // Nuevo nivel
     } = req.body;
 
@@ -106,7 +108,7 @@ export const updateUser = async (req, res) => {
     if (apellido) updatedFields.apellido = apellido;
     if (email) updatedFields.email = email;
     if (telefono) updatedFields.telefono = telefono;
-    if (direccion) updatedFields.direccion = direccion;
+    if (direccion_envio) updatedFields.direccion_envio = direccion_envio;
     if (level) updatedFields.level = level;
 
     // Actualiza la base de datos con los campos proporcionados
