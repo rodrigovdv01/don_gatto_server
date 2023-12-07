@@ -128,7 +128,7 @@ app.post("/login", async (req, res) => {
     // Configurar el token en una cookie HTTP-only
     res.cookie("authTokenServer", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set to true in production if using HTTPS
+      secure: true, // Set to true in production if using HTTPS
       sameSite: "None", // Required for cross-site cookies
       path: "/",
       maxAge: 3600000,
@@ -149,7 +149,7 @@ app.get("/logout", (req, res) => {
     // Utiliza cookieParser para eliminar las cookies
     res.clearCookie("authTokenServer", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set to true in production if using HTTPS
+      secure: true, // Set to true in production if using HTTPS
       sameSite: "None", // Required for cross-site cookies
       path: "/",
       maxAge: 3600000,
