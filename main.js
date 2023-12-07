@@ -62,6 +62,8 @@ app.use("/transacciones_pago", TransaccionRoutes);
 
 Pedido.associate = (models) => {
   Pedido.hasMany(models.DetallePedido, { foreignKey: "pedido_id" });
+  Pedido.belongsTo(User, { foreignKey: 'user_id' });
+
 };
 
 DetallePedido.associate = (models) => {
