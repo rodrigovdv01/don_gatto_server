@@ -9,8 +9,8 @@ router.get('/', getAllProducts)
 router.put('/buy', buyProducts)
 router.get('/book/:id', bookProduct)
 router.get('/:id', getProduct)
-router.post('/', createProduct)
-router.put('/:id', updateProducts)
-router.delete('/:id', deleteProduct)
+router.post('/', createProduct);
+router.put('/:id', updateProducts);
+router.delete('/:id', deleteProduct);
 
 export default router;

@@ -46,6 +46,8 @@ const createPedido = async (req, res) => {
       telefono,
       user_id,
       email,
+      distrito,
+      costo_envio,
     } = req.body;
 
     // Verifica que los campos obligatorios no sean nulos o indefinidos
@@ -55,15 +57,17 @@ const createPedido = async (req, res) => {
         .json({ message: "El campo monto_total es requerido" });
     }
 
-    // Crea un nuevo pedido en la base de datos con el user_id obtenido del middleware
+    // Crea un nuevo pedido en la base de datos con el user_id obtenido del middleware 
     const nuevoPedido = await Pedido.create({
       direccion_envio,
+      distrito,
+      costo_envio,
       telefono,
       nombre,
       user_id,
       monto_total,
       email,
-      estado_pedido: estado_pedido || "Activo", // Establece un valor predeterminado si no se proporciona estado_pedido
+      estado_pedido: estado_pedido || "Activo", //  Establece un valor predeterminado si no se proporciona estado_pedido
     });
 
     res.status(201).json({

@@ -21,6 +21,14 @@ const Pedido = db.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    distrito: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    costo_envio: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
     telefono: {
       type: DataTypes.STRING,
       allowNull: true,

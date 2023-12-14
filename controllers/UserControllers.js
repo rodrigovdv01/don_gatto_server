@@ -1,8 +1,10 @@
 import User from "../models/User.js";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs"; // Updated import statement
-import { jwtSecret } from "../config.js"; // Import the jwtSecret directly
 import { serialize } from "cookie"; // Import the cookie library
+
+
+const jwtSecret = process.env.JWT_SECRET || '1Ewe9920';
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -36,7 +38,7 @@ export const checkAuth = async (req, res) => {
       return res.json({ authenticated: false });
     }
 
-    // If everything checks out, return user data as authenticated 
+    // If everything checks out, return user data as authenticated
     return res.json({ authenticated: true, user: user });
   } catch (error) {
     console.error("Error checking authentication:", error);
@@ -67,7 +69,7 @@ export const createUser = async (req, res) => {
     });
 
     // Hashear la contraseña después de almacenarla en la base de datos
-    const hashedPassword = await bcrypt.hashSync(newUser.password, 10);
+    const hashedPassword = await bcrypt.hash(newUser.password, 10);
     newUser.password = hashedPassword;
     
     res.status(201).json({
@@ -203,8 +205,4 @@ export const signOut = async (req, res) => {
     })
   );
   res.json({ message: "Sesión cerrada exitosamente" });
-  res.clearCookie("authTokenServer"); // Clear the "authTokenServer" cookie
-    
-    res.clearCookie("authToken"); // Clear the "authTokenServer" cookie
-
 };
