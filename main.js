@@ -18,19 +18,11 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
-import fileUpload from "express-fileupload";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 dotenv.config();
-
-app.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: "./archivos",
-  })
-);
 
 const corsOptions = {
   origin: [
