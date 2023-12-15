@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', getAllPedidos); // Obtener todos los pedidos
 router.get('/usuario/:id', getMisPedidos); // Obtener todos los pedidos
 router.get('/:id/detalles', getDetalles); // Obtener todos los pedidos
-router.get('/:id', getPedidoById); // Obtener un pedido por ID
+router.get('/:id', getPedidoById); // Obtener un pedido por ID 
 router.get('/:id/metodo-pago', getTransaccionPago);
 router.post('/crear-pedido', createPedido); // Crear un nuevo pedido
 router.post('/detalles-de-pedido', createDetallePedido); // 
