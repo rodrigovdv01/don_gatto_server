@@ -1,5 +1,4 @@
 // Importa el modelo de Pedido si aún no lo has hecho
-import { v4 as uuidv4 } from 'uuid';
 import Pedido from "../models/Pedido.js";
 import DetallePedido from "../models/DetallePedido.js";
 import jwt from "jsonwebtoken";
@@ -58,10 +57,7 @@ const createPedido = async (req, res) => {
         .json({ message: "El campo monto_total es requerido" });
     }
 
-    // Genera un nuevo trackId
-    const trackId = uuidv4(); // Asegúrate de importar uuidv4 desde 'uuid'
-
-    // Crea un nuevo pedido en la base de datos con el user_id obtenido del middleware y el nuevo trackId
+    // Crea un nuevo pedido en la base de datos con el user_id obtenido del middleware 
     const nuevoPedido = await Pedido.create({
       direccion_envio,
       distrito,
@@ -71,8 +67,7 @@ const createPedido = async (req, res) => {
       user_id,
       monto_total,
       email,
-      estado_pedido: estado_pedido || "Activo",
-      trackId, // Agrega el nuevo campo trackId
+      estado_pedido: estado_pedido || "Activo", //  Establece un valor predeterminado si no se proporciona estado_pedido
     });
 
     res.status(201).json({
@@ -84,27 +79,6 @@ const createPedido = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
-
-const getPedidoByTrackId = async (req, res) => {
-  const { trackId } = req.params;
-
-  try {
-    // Busca el pedido por su trackId
-    const pedido = await Pedido.findOne({ where: { trackId } });
-
-    if (!pedido) {
-      return res.status(404).json({ error: 'Pedido no encontrado' });
-    }
-
-    return res.status(200).json(pedido);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ error: 'Error al obtener el pedido por trackId' });
-  }
-};
-
-
 
 // Controlador para obtener el método de pago de un pedido por su ID
 export const getTransaccionPago = async (req, res) => {
@@ -264,5 +238,4 @@ export {
   getMisPedidos,
   updatePedidoById,
   deletePedidoById,
-  getPedidoByTrackId,
 };
