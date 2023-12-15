@@ -48,7 +48,7 @@ export const checkAuth = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const { nombre, apellido, email, telefono, password, direccion_envio, level } =
+    const { nombre, apellido, email, telefono, password, direccion_envio, distrito, level } =
       req.body;
 
     // Verificar si el usuario ya existe en la base de datos
@@ -65,6 +65,7 @@ export const createUser = async (req, res) => {
       telefono,
       password,
       direccion_envio,
+      distrito,
       level,
     });
 
