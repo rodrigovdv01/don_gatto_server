@@ -85,6 +85,26 @@ const createPedido = async (req, res) => {
   }
 };
 
+const getPedidoByTrackId = async (req, res) => {
+  const { trackId } = req.params;
+
+  try {
+    // Busca el pedido por su trackId
+    const pedido = await Pedido.findOne({ where: { trackId } });
+
+    if (!pedido) {
+      return res.status(404).json({ error: 'Pedido no encontrado' });
+    }
+
+    return res.status(200).json(pedido);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: 'Error al obtener el pedido por trackId' });
+  }
+};
+
+
 
 // Controlador para obtener el método de pago de un pedido por su ID
 export const getTransaccionPago = async (req, res) => {
@@ -244,4 +264,5 @@ export {
   getMisPedidos,
   updatePedidoById,
   deletePedidoById,
+  getPedidoByTrackId,
 };
