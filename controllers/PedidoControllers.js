@@ -1,4 +1,5 @@
 // Importa el modelo de Pedido si aún no lo has hecho
+import { v4 as uuidv4 } from 'uuid';
 import Pedido from "../models/Pedido.js";
 import DetallePedido from "../models/DetallePedido.js";
 import jwt from "jsonwebtoken";
@@ -57,7 +58,10 @@ const createPedido = async (req, res) => {
         .json({ message: "El campo monto_total es requerido" });
     }
 
-    // Crea un nuevo pedido en la base de datos con el user_id obtenido del middleware 
+    // Genera un nuevo trackId
+    const trackId = uuidv4(); // Asegúrate de importar uuidv4 desde 'uuid'
+
+    // Crea un nuevo pedido en la base de datos con el user_id obtenido del middleware y el nuevo trackId
     const nuevoPedido = await Pedido.create({
       direccion_envio,
       distrito,
@@ -67,7 +71,8 @@ const createPedido = async (req, res) => {
       user_id,
       monto_total,
       email,
-      estado_pedido: estado_pedido || "Activo", //  Establece un valor predeterminado si no se proporciona estado_pedido
+      estado_pedido: estado_pedido || "Activo",
+      trackId, // Agrega el nuevo campo trackId
     });
 
     res.status(201).json({
@@ -79,6 +84,7 @@ const createPedido = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+
 
 // Controlador para obtener el método de pago de un pedido por su ID
 export const getTransaccionPago = async (req, res) => {

@@ -44,10 +44,15 @@ const Pedido = db.define(
       type: DataTypes.ENUM('Activo', 'En camino', 'Finalizado'),
       allowNull: false,
     },
-    
+    trackId: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      unique: true,
+    },
   },
   {
-    tableName: "pedidos", // Nombrre real de la tabla en la base de datos
+    tableName: "pedidos", // Nombre real de la tabla en la base de datos
   }
 );
 
