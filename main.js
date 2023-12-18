@@ -26,7 +26,7 @@ dotenv.config();
 
 const corsOptions = {
   origin: [
-    "https://dongattovapestore.netlify.app",
+    "https://dongatto.netlify.app",
     "http://localhost:3000",
     "http://localhost:3002",
   ],
