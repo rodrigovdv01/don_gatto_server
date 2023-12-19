@@ -118,7 +118,7 @@ app.post("/login", async (req, res) => {
       expiresIn: "1h",
     });
 
-    // Configurar el token en una cookie HTTP-only
+    // Configurar el token en una cookie HTTP-only con SameSite=None y Secure
     res.cookie("authTokenServer", token, {
       httpOnly: true,
       secure: true, // Set to true in production if using HTTPS
@@ -126,6 +126,7 @@ app.post("/login", async (req, res) => {
       path: "/",
       maxAge: 3600000,
     });
+
     res.json({ user, Login: true });
   } catch (error) {
     console.error("Error durante el inicio de sesión:", error);
@@ -163,6 +164,7 @@ app.get("/logout", (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 });
+
 
 // Sincroniza los modelos con la base de datos y escucha en el puerto especificado
 db.sync()
