@@ -41,7 +41,7 @@ const Pedido = db.define(
       allowNull: false,
     },
     estado_pedido: {
-      type: DataTypes.ENUM('Activo', 'En camino', 'Finalizado'),
+      type: DataTypes.ENUM('Activo','Confirmado', 'En camino', 'Finalizado'),
       allowNull: false,
     },
     trackId: {
