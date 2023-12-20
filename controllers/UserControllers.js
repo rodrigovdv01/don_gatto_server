@@ -48,8 +48,16 @@ export const checkAuth = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const { nombre, apellido, email, telefono, password, direccion_envio, distrito, level } =
-      req.body;
+    const {
+      nombre,
+      apellido,
+      email,
+      telefono,
+      password,
+      direccion_envio,
+      distrito,
+      level,
+    } = req.body;
 
     // Verificar si el usuario ya existe en la base de datos
     const existingUser = await User.findOne({ where: { email } });
@@ -65,14 +73,14 @@ export const createUser = async (req, res) => {
       telefono,
       password,
       direccion_envio,
-      distrito,
+      distrito, // Agregar el distrito al nuevo usuario
       level,
     });
 
     // Hashear la contraseña después de almacenarla en la base de datos
     const hashedPassword = await bcrypt.hash(newUser.password, 10);
     newUser.password = hashedPassword;
-    
+
     res.status(201).json({
       message: "Registro creado exitosamente",
     });
