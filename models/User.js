@@ -39,7 +39,7 @@ const User = db.define(
     },
     distrito: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     level: {
       type: DataTypes.ENUM("user", "admin"), // Utilizando ENUM para valores específicos
