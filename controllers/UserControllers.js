@@ -100,6 +100,7 @@ export const updateUser = async (req, res) => {
       email, // Nuevo email
       telefono, // Nuevo teléfono
       direccion_envio, // Nueva dirección
+      distrito,
       level, // Nuevo nivel
     } = req.body;
 
@@ -118,6 +119,7 @@ export const updateUser = async (req, res) => {
     if (email) updatedFields.email = email;
     if (telefono) updatedFields.telefono = telefono;
     if (direccion_envio) updatedFields.direccion_envio = direccion_envio;
+    if (level) updatedFields.distrito = distrito;
     if (level) updatedFields.level = level;
 
     // Actualiza la base de datos con los campos proporcionados

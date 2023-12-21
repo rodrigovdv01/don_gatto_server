@@ -11,11 +11,11 @@ const Pedido = db.define(
     },
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
     nombre: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     direccion_envio: {
       type: DataTypes.STRING,
@@ -23,7 +23,7 @@ const Pedido = db.define(
     },
     distrito: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     costo_envio: {
       type: DataTypes.FLOAT,
